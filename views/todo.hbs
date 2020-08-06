@@ -4,14 +4,14 @@
         <h1 class="home__heading--1" style="width: 100%"> Att göra</h1>
         <label id="user" hidden="hidden">{{user}}</label>
         
-
+        <!-- NY TODOLISTA -->
         <div class="todo__list-container">
-            <input type="text" id="todo__title-new" placeholder="Titel">
+            <input type="text" class="todo__title-new" placeholder="Titel">
 
             <ul id="todo__list-items-new">
                 <li class="todo__list-item-new">
                     <input type="checkbox" class="todo__item-check-new">
-                    <input type="text" class="todo__description-new" placeholder="Beskrivning">
+                    <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
                     <select class="todo__assignedTo-new">
                         <option value="">Ej tilldelad </option>
                         {{#each users}}
@@ -23,13 +23,13 @@
             </ul>
             <button class="todo__add-row">Ny rad</button>
 
-            <button class="todo__delete-new"><span class="fa fa-trash"></span> Töm</button>
+            {{!-- <button class="todo__delete-new"><span class="fa fa-trash"></span> Töm</button> --}}
             
             <button class="button-primary button-primary--todo" id="todo__add"> <span class="fa fa-plus"></span> Spara</button>
         </div>
 
         
-
+        <!-- EXISTERANDE LISTOR -->
         {{#each lists}}
             <div class="todo__list-container">
                 <label class="id" hidden="hidden">{{this._id}}</label>
@@ -56,7 +56,7 @@
                                 {{#if this.assignedTo}}
                                         <option value={{this.assignedTo}}>{{this.assignedTo}}</option>
                                     {{else}}
-                                        <option value="">Tilldela </option>
+                                        <option style="border-bottom: 1px solid black;" value="">Ej tilldelad </option>
                                 {{/if}}
                                 {{#each ../../users}}
                                     <option value={{this}}>{{this}}</option>
@@ -79,8 +79,74 @@
 <script>
 
     $(document.body).on('click', e => {
-        if(e.target.classList.contains('todo__item-delete')) {
+        var target = $(e.target);
+        if(target.hasClass('todo__item-delete')) {
             $(e.target).parent('li').remove();
+        } else if (target.hasClass('todo__description-new')){
+            // Om det inte finns någon todo__desc-new som har tomt värde, skapa en
+            
+        }
+    });
+    $(document.body).on('input', e => {
+        var target = $(e.target);
+
+        if (target.hasClass('todo__description-new')) {
+            console.log("Input i en ruta yo");
+
+            if(target.val() !== "") {
+                target.removeClass('empty');
+            } else {
+                target.addClass('empty');
+            }
+
+            console.log($('.empty').length);
+
+            if($('.empty').length == 0) {
+                console.log("Finns ingen tom så jag skapar en");
+                $('#todo__list-items-new').append(`
+                    <li class="todo__list-item-new">
+                        <input type="checkbox" class="todo__item-check-new">
+                        <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
+                        <select class="todo__assignedTo-new">
+                            <option value="">Ej tilldelad </option>
+                            {{#each users}}
+                                <option value={{this}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                        <span class="fa fa-trash todo__item-delete"></span>
+                    </li>
+                `);
+            }
+        }
+    });
+
+    // När användare skriver något
+    $('.todo__description-new').on('input', (e) => {
+        let target = $(e.target);
+
+        if(target.val() !== "") {
+            target.removeClass('empty');
+        } else {
+            target.addClass('empty');
+        }
+
+        console.log($('.empty').length);
+
+        if($('.empty').length == 0) {
+            console.log("Finns ingen tom så jag skapar en");
+            $('#todo__list-items-new').append(`
+                <li class="todo__list-item-new">
+                    <input type="checkbox" class="todo__item-check-new">
+                    <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
+                    <select class="todo__assignedTo-new">
+                        <option value="">Ej tilldelad </option>
+                        {{#each users}}
+                            <option value={{this}}>{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="fa fa-trash todo__item-delete"></span>
+                </li>
+            `);
         }
     });
 
@@ -88,7 +154,7 @@
         $('#todo__list-items-new').append(`
             <li class="todo__list-item-new">
                 <input type="checkbox" class="todo__item-check-new">
-                <input type="text" class="todo__description-new" placeholder="Beskrivning">
+                <input type="text" class="todo__description-new todo__description" placeholder="Beskrivning">
                 <select class="todo__assignedTo-new">
                     <option value="">Ej tilldelad </option>
                     {{#each users}}
@@ -129,7 +195,7 @@
         e.preventDefault();
 
         $('.todo__list-item-new').remove();
-        $('#todo__title-new').val('');
+        $('.todo__title-new').val('');
     });
 
 
