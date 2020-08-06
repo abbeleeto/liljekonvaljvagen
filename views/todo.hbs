@@ -159,8 +159,6 @@
             items
         };
 
-        console.log(newList);
-
         $.ajax({
             method: "PUT",
             url: `/api/todo/${id}`,
@@ -229,7 +227,6 @@
             url: "/api/todo",
             data: JSON.stringify(newList),
             success: (result) => {
-                console.log(result);
                 window.location.href = "/dashboard/todo";
             },
             error: err => {

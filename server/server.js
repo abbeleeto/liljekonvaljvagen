@@ -181,7 +181,6 @@ app.post('/api/todo', auth, (req, res) => {
 
     const items = [];
     req.body.items.forEach(x => {
-        console.log(x)
         const todoItem = {
             text: x.text,
             assignedTo: x.assignedTo,
@@ -218,7 +217,6 @@ app.put('/api/todo/:id', auth, (req, res) => {
         if(err) res.status(400).send();
 
         res.status(200).send({
-            message: "Updated!",
             doc
         });
     });
