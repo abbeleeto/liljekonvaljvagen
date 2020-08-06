@@ -1,7 +1,8 @@
 <div class="container dashboard">
     {{>dashboard_nav}}
+
     <div class="todo__container">
-        <h1 class="home__heading--1" style="width: 100%"> Att göra</h1>
+        
         <label id="user" hidden="hidden">{{user}}</label>
         
         <!-- NY TODOLISTA -->
@@ -101,6 +102,14 @@
             console.log(currval);
         }
     });
+
+    // Lyssna efter enter-tryck
+    $(document.body).on('keyup', e => {
+        if(e.keyCode == 13){
+            $(e.target).text($(e.target).text().substr(0, $(e.target).text().length));
+            $(e.target).parent('.todo__item').next().find('.todo__item-description').focus();
+        }
+    })
 
     // Input i genererade textfält
     $(document.body).on('input', e => {

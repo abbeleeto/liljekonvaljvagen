@@ -437,7 +437,12 @@ textarea {
 .home__heading--1 {
     color: var(--color-grey-light-3);
     font-size: 6rem;
-    text-shadow: 2px 2px black;
+    text-shadow: 1px 1px black;
+    letter-spacing: .5rem;
+    text-transform: uppercase;
+    transform: skewX(-10deg);
+    width: 100%;
+    text-align: center;
 }
 
 .home__heading--2 {
@@ -505,6 +510,7 @@ textarea {
     padding: 2rem;
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .todo__list-container {
@@ -516,6 +522,7 @@ textarea {
     background: rgb(0 0 0 / 55%);
     box-shadow: var(--shadow-dark);
     margin: 2rem;
+    border-radius: 1rem;
 }
 .todo__list-items-new {
     padding: 0rem;
@@ -545,6 +552,9 @@ textarea {
 .todo__button-container {
     display: flex;
     justify-content: space-evenly;
+    background-color: rgba(165, 164, 164, 0.205);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 .button-secondary {
@@ -583,6 +593,8 @@ textarea {
     outline: none;
     border: none;
     border-bottom: 2px solid var(--color-grey-dark-2);
+    text-align: center;
+    padding: 1rem 0;
 }
 .todo__title:focus{
     outline: none;
@@ -640,6 +652,8 @@ textarea {
     background-color: rgba(165, 164, 164, 0.205);
     padding: 1rem;
     color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 /* .todo__item > input[type="text"] {
