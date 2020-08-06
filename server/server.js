@@ -187,7 +187,7 @@ app.post('/api/todo', auth, (req, res) => {
             assignedTo: x.assignedTo,
             isDone: x.isDone
         };
-        
+
         items.push(todoItem);
     });
 
@@ -207,10 +207,26 @@ app.post('/api/todo', auth, (req, res) => {
     });
 });
 
+// UPPDATERA TODO
+app.put('/api/todo/:id', auth, (req, res) => {
+    const id = req.params.id;
+    const todo = req.body;
+    todo.lastUpdate = moment(todo.lastUpdate).format("YYYY-MM-DD HH:mm:ss");
+
+
+    Todo.findByIdAndUpdate({_id: id}, todo, {new: false, upsert: true}, (err, doc) => {
+        if(err) res.status(400).send();
+
+        res.status(200).send({
+            message: "Updated!",
+            doc
+        });
+    });
+});
+
 // RADERA TODO
 app.delete('/api/todo/:id', auth, (req, res) => {
     const id = req.params.id;
-    console.log("Got an id:", id);
 
     Todo.findByIdAndUpdate({_id: id}, {isDeleted: true}, {
         new: false,

@@ -512,16 +512,17 @@ textarea {
     flex-direction: column;
     min-width: 40rem;
     max-width: 30rem;
-    padding: 2rem;
-    background: rgba(51,51,51,0.8);
+    padding: .5rem;
+    background: rgb(0 0 0 / 78%);
     box-shadow: var(--shadow-dark);
     margin: 2rem;
 }
-#todo__list-items-new {
+.todo__list-items-new {
     padding: 0rem;
 }
 
-.todo__list-item-new {
+.todo__list-item-new,
+.todo__list-item {
     display: flex;
     width: 100%;
     justify-content: flex-start;
@@ -535,9 +536,11 @@ textarea {
 
 .todo__item-delete {
     display: inline-block;
-    font-size: 3rem;
+    font-size: 2rem;
     color: red;
     width: 10%;
+    text-align: center;
+    padding: 0 .5rem;
 }
 .todo__button-container {
     display: flex;
@@ -574,9 +577,18 @@ textarea {
 
 .todo__title {
     color: var(--color-grey-light-3);
+    background-color: transparent;
     text-transform: uppercase;
     font-size: 2rem;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--color-grey-dark-2);
 }
+.todo__title:focus{
+    outline: none;
+    border-bottom: 2px solid var(--color-grey-light-2);
+}
+
 .todo__title-new {
     background-color: transparent;
     color: var(--color-grey-light-1);
@@ -601,6 +613,11 @@ textarea {
     align-items: center;
     justify-content: space-between;
 }
+.todo__updated {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .todo__created-by > span {
     text-transform: uppercase;
     color: var(--color-grey-light-2);
@@ -612,10 +629,20 @@ textarea {
     color: var(--color-grey-light-4);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 1rem auto;
+    justify-content: space-evenly;
+    padding: .5rem 0;
 }
-.todo__item > input[type="text"] {
+.todo__item:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.212);
+}
+
+.todo__head {
+    background-color: rgba(165, 164, 164, 0.205);
+    padding: 1rem;
+    color: #fff;
+}
+
+/* .todo__item > input[type="text"] {
     font-size: 1.6rem;
     width: 100%;
     background-color: transparent;
@@ -632,10 +659,20 @@ textarea {
 
 .todo__item > input[type="text"]:hover {
     cursor: pointer;
-}
+} */
 
 .todo__item > select {
     height: 100%;
+}
+
+.todo__item-description {
+    color: #fff;
+    width: 100%;
+    border-bottom: 2px solid transparent;
+}
+.todo__item-description:focus {
+    outline: none;
+    border-bottom: 2px solid var(--color-grey-light-3);
 }
 
 .todo__description {

@@ -5,14 +5,18 @@
         <label id="user" hidden="hidden">{{user}}</label>
         
         <!-- NY TODOLISTA -->
-        <div class="todo__list-container">
-            <input type="text" class="todo__title-new" placeholder="Titel">
-
-            <ul id="todo__list-items-new">
-                <li class="todo__list-item-new">
+        <div class="todo__list-container" style="box-shadow: 3px 3px 20px  #fff">
+            
+            <div class="todo__title" placeholder="Beskrivning" contenteditable spellcheck="false">Skapa ny lista</div>
+ 
+            <ul class="todo__list-items-new">
+                <li class="todo__item">
                     <input type="checkbox" class="todo__item-check-new">
-                    <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
-                    <select class="todo__assignedTo-new">
+                    {{!-- <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning" spellcheck="false"> --}}
+                    <div class="todo__item-description todo__description-new empty" placeholder="Beskrivning" contenteditable spellcheck="false">
+                        {{this.text}}
+                    </div>
+                    <select class="todo__assignedTo">
                         <option value="">Ej tilldelad </option>
                         {{#each users}}
                             <option value={{this}}>{{this}}</option>
@@ -21,38 +25,43 @@
                     <span class="fa fa-trash todo__item-delete"></span>
                 </li>
             </ul>
-            <button class="todo__add-row">Ny rad</button>
 
-            {{!-- <button class="todo__delete-new"><span class="fa fa-trash"></span> Töm</button> --}}
-            
-            <button class="button-primary button-primary--todo" id="todo__add"> <span class="fa fa-plus"></span> Spara</button>
+            <button class="button-primary button-primary--todo" id="todo__add"> <span class="fa fa-plus"></span> Skapa</button>
         </div>
 
         
         <!-- EXISTERANDE LISTOR -->
         {{#each lists}}
             <div class="todo__list-container">
-                <label class="id" hidden="hidden">{{this._id}}</label>
-                <h3 class="todo__title">{{this.title}}</h3>
-                <div class="todo__created">
-                    <span class="todo__created-date">Skapad: {{this.createdAt}}</span>
-                    <div class="todo__users">
-                        <div class="todo__created-by">
-                            Skapad av: <span class="todo__created-by__name">{{this.createdBy}}</span>
+                <div class="todo__head">
+                    <label class="id" hidden="hidden">{{this._id}}</label>
+                    
+                    <div class="todo__title" contenteditable spellcheck="false">
+                        {{this.title}}
+                    </div>
+                    <div class="todo__created">
+                        Skapad:<span class="todo__created-date">{{this.createdAt}}</span>
+                        <div class="todo__users">
+                            <div class="todo__created-by">
+                                <span class="todo__created-by__name">{{this.createdBy}}</span>
+                            </div>
                         </div>
-                        <div class="todo__assigned-to">
-                            Tilldelad: <span class="todo__assigned-to__name">{{this.assignedTo}}</span>
-                        </div>
+                    </div>
+                    <div class="todo__updated">Uppdaterad:<span class="todo__lastUpdate"> {{this.lastUpdate}}</span><span>Av</span>
                     </div>
                     
                 </div>
                 
-                <ul>
+                
+                <ul class="todo__list">
                     {{#each this.items}}
                         <li class="todo__item">
                             <input class="todo__item-check" type="checkbox" {{#if this.isDone}}checked="checked"{{/if}}>
-                            <input class="todo__item-description" type="text" value='{{this.text}}'>
-                            <select id="todo__assignTo">
+                            {{!-- <input class="todo__item-description" type="text" value='{{this.text}}'> --}}
+                            <div class="todo__item-description" contenteditable spellcheck="false">
+                                {{this.text}}
+                            </div>
+                            <select class="todo__assignedTo">
                                 {{#if this.assignedTo}}
                                         <option value={{this.assignedTo}}>{{this.assignedTo}}</option>
                                     {{else}}
@@ -62,13 +71,13 @@
                                     <option value={{this}}>{{this}}</option>
                                 {{/each}}
                             </select>
-                            <a class="todo__item-delete"></a>
+                            <span class="fa fa-trash todo__item-delete"></span>
                         </li>
                     {{/each}}
                 </ul>
                 <div class="todo__button-container">
                     <button class="todo__update button-secondary button-secondary--success" id="todo__save" data-id={{this._id}}> <span class="fa fa-save"></span> Spara</button>
-                    <button class="todo__edit button-secondary button-secondary--secondary" data-id={{this._id}}><span class="fa fa-pencil"></span> Editera</button>
+                    {{!-- <button class="todo__edit button-secondary button-secondary--secondary" data-id={{this._id}}><span class="fa fa-pencil"></span> Editera</button> --}}
                     <button class="todo__delete button-secondary button-secondary--danger" data-id={{this._id}}><span class="fa fa-trash"></span> Radera lista</button>
                 </div>
             </div>
@@ -81,33 +90,39 @@
     $(document.body).on('click', e => {
         var target = $(e.target);
         if(target.hasClass('todo__item-delete')) {
-            $(e.target).parent('li').remove();
-        } else if (target.hasClass('todo__description-new')){
-            // Om det inte finns någon todo__desc-new som har tomt värde, skapa en
-            
+            $(e.target).parent('.todo__item').remove();
         }
     });
+
+    $('.todo__title').first().on('click', function() {
+        const currval = $(this).text();
+        if(currval.toUpperCase() == "Skapa ny lista".toUpperCase()) {
+            $(this).text('');
+        } else {
+            console.log(currval);
+        }
+    });
+
+    // Input i genererade textfält
     $(document.body).on('input', e => {
         var target = $(e.target);
 
-        if (target.hasClass('todo__description-new')) {
-            console.log("Input i en ruta yo");
+        if (target.hasClass('todo__item-description')) {
 
-            if(target.val() !== "") {
+            if(target.text() !== "") {
                 target.removeClass('empty');
             } else {
                 target.addClass('empty');
             }
 
-            console.log($('.empty').length);
+            const list = target.parents('.todo__list-container');
 
-            if($('.empty').length == 0) {
-                console.log("Finns ingen tom så jag skapar en");
-                $('#todo__list-items-new').append(`
-                    <li class="todo__list-item-new">
+            if($(list).find('.empty').length == 0) {
+                $(list).find('.todo__list').append(`
+                    <li class="todo__item">
                         <input type="checkbox" class="todo__item-check-new">
-                        <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
-                        <select class="todo__assignedTo-new">
+                        <div class="todo__item-description todo__description-new empty" placeholder="Beskrivning" contenteditable spellcheck="false"></div>
+                        <select class="todo__assignedTo">
                             <option value="">Ej tilldelad </option>
                             {{#each users}}
                                 <option value={{this}}>{{this}}</option>
@@ -120,52 +135,48 @@
         }
     });
 
-    // När användare skriver något
-    $('.todo__description-new').on('input', (e) => {
-        let target = $(e.target);
+    // UPPDATERA EXISTERANDE LISTA
+    $('.todo__update').on('click', e => {
+        e.preventDefault();
+        const id = $(e.target).data('id');
 
-        if(target.val() !== "") {
-            target.removeClass('empty');
-        } else {
-            target.addClass('empty');
-        }
+        const list = $(e.target).parents('.todo__list-container');
 
-        console.log($('.empty').length);
 
-        if($('.empty').length == 0) {
-            console.log("Finns ingen tom så jag skapar en");
-            $('#todo__list-items-new').append(`
-                <li class="todo__list-item-new">
-                    <input type="checkbox" class="todo__item-check-new">
-                    <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning">
-                    <select class="todo__assignedTo-new">
-                        <option value="">Ej tilldelad </option>
-                        {{#each users}}
-                            <option value={{this}}>{{this}}</option>
-                        {{/each}}
-                    </select>
-                    <span class="fa fa-trash todo__item-delete"></span>
-                </li>
-            `);
-        }
+        var items = [];
+        list.find('.todo__item').each((index, val) => {
+            items.push({
+                text: $(val).find('.todo__item-description').text(),
+                assignedTo: $(val).find('.todo__assignedTo').val(),
+                isDone: $(val).find('.todo__item-check').is(':checked')
+            });
+        });
+
+        var newList = {
+            title: list.find('.todo__title').text(),
+            //createdDate: list.find('.todo__created').val(),
+            lastUpdate: new Date(),
+            createdBy: $('#user').text(),
+            items
+        };
+
+        console.log(newList);
+
+        $.ajax({
+            method: "PUT",
+            url: `/api/todo/${id}`,
+            contentType: "application/json",
+            data: JSON.stringify(newList),
+            success: doc => {
+                window.location.href = "/dashboard/todo";
+            },
+            error: err => {
+                alert(err);
+            }
+        });
     });
 
-    $('.todo__add-row').on('click', () => {
-        $('#todo__list-items-new').append(`
-            <li class="todo__list-item-new">
-                <input type="checkbox" class="todo__item-check-new">
-                <input type="text" class="todo__description-new todo__description" placeholder="Beskrivning">
-                <select class="todo__assignedTo-new">
-                    <option value="">Ej tilldelad </option>
-                    {{#each users}}
-                        <option value={{this}}>{{this}}</option>
-                    {{/each}}
-                </select>
-                <span class="fa fa-trash todo__item-delete"></span>
-            </li>
-        `);
-    });
-
+    // TA BORT LISTA
     $('.todo__delete').on('click', e => {
         e.preventDefault();
 
@@ -191,34 +202,27 @@
         }
     });
 
-    $('.todo__delete-new').on('click', (e) => {
-        e.preventDefault();
-
-        $('.todo__list-item-new').remove();
-        $('.todo__title-new').val('');
-    });
-
-
+    // NY LISTA
     $('#todo__add').on('click', (e) => {
         e.preventDefault();
 
+        const target = $(e.target).parents('.todo__list-container');
+
         var items = [];
-        $('.todo__list-item-new').each((index, val) => {
+        target.find('.todo__item').each((index, val) => {
             items.push({
-                text: $(val).find('.todo__description-new').val(),
-                assignedTo: $(val).find('.todo__assignedTo-new').val(),
-                isDone: $(val).find('.todo__item-check-new').is(':checked')
+                text: $(val).find('.todo__item-description').text(),
+                assignedTo: $(val).find('.todo__assignedTo').val(),
+                isDone: $(val).find('.todo__item-check').is(':checked')
             });
         });
 
         var newList = {
-            title: $('#todo__title-new').val(),
+            title: target.find('.todo__title').text().trim(),
             createdDate: new Date(),
             createdBy: $('#user').text(),
             items
         };
-
-        console.log(newList);
 
         $.ajax({
             method: "POST",
@@ -234,10 +238,4 @@
             }
         });
     })
-
-    $('#todo__save').on('click', e => {
-        e.preventDefault();
-
-        
-    });
 </script>

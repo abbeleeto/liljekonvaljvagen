@@ -20,7 +20,7 @@ const todoSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    assignedTo: {
+    lastUpdate: {
         type: String
     },
     items: {
