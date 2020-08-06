@@ -13,6 +13,7 @@ const {Review} = require('./models/review');
 const {User} = require('./models/user');
 const { Item } = require('./models/todo');
 const {Todo} = require('./models/todo');
+const { TodoItem } = require('./models/todoitem');
 
 const app = express();
 
@@ -178,12 +179,24 @@ app.post('/api/login', (req, res) => {
 // NY TODO LISTA
 app.post('/api/todo', auth, (req, res) => {
 
+    const items = [];
+    req.body.items.forEach(x => {
+        console.log(x)
+        const todoItem = {
+            text: x.text,
+            assignedTo: x.assignedTo,
+            isDone: x.isDone
+        };
+        
+        items.push(todoItem);
+    });
+
     const newList = new Todo({
         title: req.body.title,
         description: req.body.description,
         createdAt: moment(req.body.createdAt).format("YYYY-MM-DD HH:mm:ss"),
         createdBy: req.body.createdBy,
-        items: req.body.items,
+        items,
         isDeleted: false
     });
 

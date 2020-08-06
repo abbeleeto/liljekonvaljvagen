@@ -37,6 +37,9 @@ const userSchema = mongoose.Schema({
     token: {
         type: String,
         require: true // FIXA
+    },
+    isAdmin: {
+        type: Boolean
     }
 });
 

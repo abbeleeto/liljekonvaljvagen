@@ -7,7 +7,7 @@ const config = {
     default: {
         SECRET: "Bitchtits",
         DATABASE: "mongodb://localhost:27017/liso",
-        PORT: 3000
+        PORT: 3003
     }
 };
 

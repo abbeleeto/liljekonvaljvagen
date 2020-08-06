@@ -10,9 +10,10 @@
 
             <ul id="todo__list-items-new">
                 <li class="todo__list-item-new">
+                    <input type="checkbox" class="todo__item-check-new">
                     <input type="text" class="todo__description-new" placeholder="Beskrivning">
-                    <select id="todo__assignedTo-new">
-                        <option value="">Tilldela </option>
+                    <select class="todo__assignedTo-new">
+                        <option value="">Ej tilldelad </option>
                         {{#each users}}
                             <option value={{this}}>{{this}}</option>
                         {{/each}}
@@ -49,10 +50,14 @@
                 <ul>
                     {{#each this.items}}
                         <li class="todo__item">
-                            <input class="todo__item-check" type="checkbox">
-                            <span class="todo__item-description">{{this}}</span>
+                            <input class="todo__item-check" type="checkbox" {{#if this.isDone}}checked="checked"{{/if}}>
+                            <input class="todo__item-description" type="text" value='{{this.text}}'>
                             <select id="todo__assignTo">
-                                <option value="">Tilldela </option>
+                                {{#if this.assignedTo}}
+                                        <option value={{this.assignedTo}}>{{this.assignedTo}}</option>
+                                    {{else}}
+                                        <option value="">Tilldela </option>
+                                {{/if}}
                                 {{#each ../../users}}
                                     <option value={{this}}>{{this}}</option>
                                 {{/each}}
@@ -63,7 +68,7 @@
                 </ul>
                 <div class="todo__button-container">
                     <button class="todo__update button-secondary button-secondary--success" id="todo__save" data-id={{this._id}}> <span class="fa fa-save"></span> Spara</button>
-                    <button class="todo__delete button-secondary button-secondary--secondary" data-id={{this._id}}><span class="fa fa-pencil"></span> Editera</button>
+                    <button class="todo__edit button-secondary button-secondary--secondary" data-id={{this._id}}><span class="fa fa-pencil"></span> Editera</button>
                     <button class="todo__delete button-secondary button-secondary--danger" data-id={{this._id}}><span class="fa fa-trash"></span> Radera lista</button>
                 </div>
             </div>
@@ -82,7 +87,14 @@
     $('.todo__add-row').on('click', () => {
         $('#todo__list-items-new').append(`
             <li class="todo__list-item-new">
+                <input type="checkbox" class="todo__item-check-new">
                 <input type="text" class="todo__description-new" placeholder="Beskrivning">
+                <select class="todo__assignedTo-new">
+                    <option value="">Ej tilldelad </option>
+                    {{#each users}}
+                        <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </select>
                 <span class="fa fa-trash todo__item-delete"></span>
             </li>
         `);
@@ -118,14 +130,19 @@
 
         $('.todo__list-item-new').remove();
         $('#todo__title-new').val('');
-    })
+    });
+
 
     $('#todo__add').on('click', (e) => {
         e.preventDefault();
 
         var items = [];
-        $('.todo__description-new').each((index, val) => {
-            items.push($(val).val());
+        $('.todo__list-item-new').each((index, val) => {
+            items.push({
+                text: $(val).find('.todo__description-new').val(),
+                assignedTo: $(val).find('.todo__assignedTo-new').val(),
+                isDone: $(val).find('.todo__item-check-new').is(':checked')
+            });
         });
 
         var newList = {
@@ -143,6 +160,7 @@
             url: "/api/todo",
             data: JSON.stringify(newList),
             success: (result) => {
+                console.log(result);
                 window.location.href = "/dashboard/todo";
             },
             error: err => {
