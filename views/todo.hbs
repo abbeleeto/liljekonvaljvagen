@@ -1,0 +1,159 @@
+<div class="container dashboard">
+    {{>dashboard_nav}}
+    <div class="todo__container">
+        <h1 class="home__heading--1" style="width: 100%"> Att göra</h1>
+        <label id="user" hidden="hidden">{{user}}</label>
+        
+
+        <div class="todo__list-container">
+            <input type="text" id="todo__title-new" placeholder="Titel">
+
+            <ul id="todo__list-items-new">
+                <li class="todo__list-item-new">
+                    <input type="text" class="todo__description-new" placeholder="Beskrivning">
+                    <select id="todo__assignedTo-new">
+                        <option value="">Tilldela </option>
+                        {{#each users}}
+                            <option value={{this}}>{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="fa fa-trash todo__item-delete"></span>
+                </li>
+            </ul>
+            <button class="todo__add-row">Ny rad</button>
+
+            <button class="todo__delete-new"><span class="fa fa-trash"></span> Töm</button>
+            
+            <button class="button-primary button-primary--todo" id="todo__add"> <span class="fa fa-plus"></span> Spara</button>
+        </div>
+
+        
+
+        {{#each lists}}
+            <div class="todo__list-container">
+                <label class="id" hidden="hidden">{{this._id}}</label>
+                <h3 class="todo__title">{{this.title}}</h3>
+                <div class="todo__created">
+                    <span class="todo__created-date">Skapad: {{this.createdAt}}</span>
+                    <div class="todo__users">
+                        <div class="todo__created-by">
+                            Skapad av: <span class="todo__created-by__name">{{this.createdBy}}</span>
+                        </div>
+                        <div class="todo__assigned-to">
+                            Tilldelad: <span class="todo__assigned-to__name">{{this.assignedTo}}</span>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <ul>
+                    {{#each this.items}}
+                        <li class="todo__item">
+                            <input class="todo__item-check" type="checkbox">
+                            <span class="todo__item-description">{{this}}</span>
+                            <select id="todo__assignTo">
+                                <option value="">Tilldela </option>
+                                {{#each ../../users}}
+                                    <option value={{this}}>{{this}}</option>
+                                {{/each}}
+                            </select>
+                            <a class="todo__item-delete"></a>
+                        </li>
+                    {{/each}}
+                </ul>
+                <div class="todo__button-container">
+                    <button class="todo__update button-secondary button-secondary--success" id="todo__save" data-id={{this._id}}> <span class="fa fa-save"></span> Spara</button>
+                    <button class="todo__delete button-secondary button-secondary--secondary" data-id={{this._id}}><span class="fa fa-pencil"></span> Editera</button>
+                    <button class="todo__delete button-secondary button-secondary--danger" data-id={{this._id}}><span class="fa fa-trash"></span> Radera lista</button>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<script>
+
+    $(document.body).on('click', e => {
+        if(e.target.classList.contains('todo__item-delete')) {
+            $(e.target).parent('li').remove();
+        }
+    });
+
+    $('.todo__add-row').on('click', () => {
+        $('#todo__list-items-new').append(`
+            <li class="todo__list-item-new">
+                <input type="text" class="todo__description-new" placeholder="Beskrivning">
+                <span class="fa fa-trash todo__item-delete"></span>
+            </li>
+        `);
+    });
+
+    $('.todo__delete').on('click', e => {
+        e.preventDefault();
+
+
+        if(confirm('Är du säker på att du vill radera listan?')){
+
+            const id = $(e.target).data('id');
+
+            $.ajax({
+                method: "DELETE",
+                url: `/api/todo/${id}`,
+                success: (result) => {
+                    console.log("Removed list");
+                    window.location.href = "/dashboard/todo";
+                },
+                error: err => {
+                    alert(err.message);
+                    console.log(" Skit på dig",err.error);
+                }
+            });
+        } else {
+            return false;
+        }
+    });
+
+    $('.todo__delete-new').on('click', (e) => {
+        e.preventDefault();
+
+        $('.todo__list-item-new').remove();
+        $('#todo__title-new').val('');
+    })
+
+    $('#todo__add').on('click', (e) => {
+        e.preventDefault();
+
+        var items = [];
+        $('.todo__description-new').each((index, val) => {
+            items.push($(val).val());
+        });
+
+        var newList = {
+            title: $('#todo__title-new').val(),
+            createdDate: new Date(),
+            createdBy: $('#user').text(),
+            items
+        };
+
+        console.log(newList);
+
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: "/api/todo",
+            data: JSON.stringify(newList),
+            success: (result) => {
+                window.location.href = "/dashboard/todo";
+            },
+            error: err => {
+                alert("Något gick fel när jag försökte spara sidan. Refresha och se vad som händer ☻");
+            }
+        });
+    })
+
+    $('#todo__save').on('click', e => {
+        e.preventDefault();
+
+        
+    });
+</script>

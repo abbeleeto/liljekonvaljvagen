@@ -1,0 +1,99 @@
+<div class="container_register register__container">
+        
+        <form id="register_form" class="shadowbox">
+            <h2 class="home__heading--2">Registrera dig</h2>
+            <br>
+
+            <div>
+                <input type="text" id="firstname" name="firstname" placeholder="Förnamn">
+            </div>
+
+            <div>
+                <input type="text" id="lastname" name="lastname" placeholder="Efternamn">
+            </div>
+
+            <div>
+                <input type="text" id="email" name="email" placeholder="Epostadress">
+            </div>
+
+            <div>
+                <input type="text" id="phone" name="phone" placeholder="Telefonnummer">
+            </div>
+
+            <div>
+                <input type="password" id="password" name="password" placeholder="Lösenord">
+            </div>
+
+            <div>
+                <input type="password" id="password_confirm" name="password_confirm" placeholder="Upprepa lösenord">
+            </div>
+
+            <div>
+                <span id="register-error" style="display: block; color:red;"></span>
+            </div>
+
+            <button class="button-primary" type="submit">Registrera dig</button>
+        </form>
+    </div>
+
+<script>
+    
+    $("#register_form").validate({
+			rules: {
+				firstname: "required",
+				lastname: "required",
+                email: {
+                   required: true,
+                   email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                password_confirm: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#password"
+                }
+			},
+			messages: {
+                username:"Please add a username",
+				name: "Please enter your firstname",
+				lastname: "Please enter your lastname",
+                email:"Please enter a valid email",
+                password:{
+                    required:"The password is required",
+                    minlength:"The min is 5 characters"
+                },
+                password_confirm:"Password is not the same :S"
+			},
+            submitHandler: function(form,event) {
+                event.preventDefault();
+                submitForm();
+            }
+		});
+
+        function submitForm(){
+            const user = {
+                firstname: $('#firstname').val(),
+                lastname: $('#lastname').val(),
+                email: $('#email').val(),
+                password: $('#password').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/register',
+                data: JSON.stringify(user),
+                contentType: 'application/json',
+                success: (data) => {
+                    window.location.href = "/dashboard";
+                },
+                error: err => {
+                    console.log(err);
+                    $('#register-error').text(err.responseJSON.message);
+                }
+            });
+        }
+
+</script>

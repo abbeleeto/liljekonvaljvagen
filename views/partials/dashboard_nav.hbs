@@ -1,0 +1,48 @@
+<div class="dash_nav">
+    <!--  HOME -->
+    <div class="item" title="Hem">
+        <a href="/">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+    </div>
+    <!--  BOOKING -->
+    <div class="item" title="Boka">
+        <a href="/dashboard/booking">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!--  IMAGES -->
+    <div class="item" title="Bilder">
+        <a href="/dashboard/gallery">
+            <i class="fa fa-image" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!--  TODO -->
+    {{#if isAdmin}}
+        <div class="item" title="Att göra">
+
+            <a href="/dashboard/todo">
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </div>
+    {{/if}}
+
+    <!--  Inköpslistor -->
+    {{#if isAdmin}}
+        <div class="item" title="Inköpslistor">
+
+            <a href="/dashboard/articles">
+                <i class="fa fa-dollar" aria-hidden="true"></i>
+            </a>
+        </div>
+    {{/if}}
+
+    <!--  LOGOUT -->
+    <div class="item" title="Logga ut">
+        <a href="/dashboard/logout">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>

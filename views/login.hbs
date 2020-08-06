@@ -1,0 +1,43 @@
+<div class="container_login login__container">
+    <form id="login_form" class="shadowbox">
+        <h2 class="home__heading--2">Logga in</h2>
+        <br>
+        <div>
+            <label for="email">Epost</label>
+            <input type="text" id="email" name="email" placeholder="enter your mail">
+        </div>
+        <div>
+            <label for="password">Lösenord</label>
+            <input type="password" id="password" name="password" placeholder="enter your password">
+        </div>
+        <label id="login-error" style="display: block; color: red;"></label>
+        <button class="button-primary" type="submit">Logga in</button>
+        <span> eller </span>
+        <button class="button-primary" onclick="window.location.href = '/register'">Registrera dig</button>
+    </form>
+</div>
+
+<script>
+    $('#login_form').on('submit', (e) => {
+        e.preventDefault();
+
+        const user = {
+            email: $('#email').val(),
+            password: $('#password').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/login',
+            data: JSON.stringify(user),
+            contentType: 'application/json',
+            success: (data) => {
+                window.location.href = "/dashboard";
+            },
+            error: err => {
+                console.log(err);
+                $('#login-error').text(err.responseJSON.message);
+            }
+        });
+    });
+</script>
