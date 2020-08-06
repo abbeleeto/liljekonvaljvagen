@@ -510,6 +510,16 @@ textarea {
     padding: 2rem;
     display: flex;
     flex-wrap: wrap;
+}
+
+.gallery__container {
+    background: linear-gradient(to right bottom, rgb(255 230 51 / 55%), #53e9b273,rgba(0,255,0,0.5)), url(../images/IMG_20200523_125825.jpg);/* linear-gradient(to right bottom, rgb(233 255 51 / 40%), rgba(0,255,0,0.5)), url(../images/IMG_20200523_125825.jpg); */
+    background-size: cover;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
 }
 

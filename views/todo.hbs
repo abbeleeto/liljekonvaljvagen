@@ -16,12 +16,12 @@
                     <div class="todo__item-description todo__description-new empty" placeholder="Beskrivning" contenteditable spellcheck="false">
                         {{this.text}}
                     </div>
-                    <select class="todo__assignedTo">
+                    {{!-- <select class="todo__assignedTo">
                         <option value="">Ej tilldelad </option>
                         {{#each users}}
                             <option value={{this}}>{{this}}</option>
                         {{/each}}
-                    </select>
+                    </select> --}}
                     <span class="fa fa-trash todo__item-delete"></span>
                 </li>
             </ul>
@@ -61,7 +61,15 @@
                             <div class="todo__item-description" contenteditable spellcheck="false">
                                 {{this.text}}
                             </div>
+                            {{!-- {{#if this.isDone}}
                             <select class="todo__assignedTo">
+                                <option value="">Gjord av</option>
+                                {{#each ../../users}}
+                                    <option value={{this}}>{{this}}</option>
+                                {{/each}}
+                            </select>
+                            {{/if}} --}}
+                            {{!-- <select class="todo__assignedTo">
                                 {{#if this.assignedTo}}
                                         <option value={{this.assignedTo}}>{{this.assignedTo}}</option>
                                     {{else}}
@@ -70,7 +78,7 @@
                                 {{#each ../../users}}
                                     <option value={{this}}>{{this}}</option>
                                 {{/each}}
-                            </select>
+                            </select> --}}
                             <span class="fa fa-trash todo__item-delete"></span>
                         </li>
                     {{/each}}
@@ -130,12 +138,12 @@
                     <li class="todo__item">
                         <input type="checkbox" class="todo__item-check-new">
                         <div class="todo__item-description todo__description-new empty" placeholder="Beskrivning" contenteditable spellcheck="false"></div>
-                        <select class="todo__assignedTo">
+                        {{!-- <select class="todo__assignedTo">
                             <option value="">Ej tilldelad </option>
                             {{#each users}}
                                 <option value={{this}}>{{this}}</option>
                             {{/each}}
-                        </select>
+                        </select> --}}
                         <span class="fa fa-trash todo__item-delete"></span>
                     </li>
                 `);
@@ -155,7 +163,7 @@
         list.find('.todo__item').each((index, val) => {
             items.push({
                 text: $(val).find('.todo__item-description').text(),
-                assignedTo: $(val).find('.todo__assignedTo').val(),
+                //assignedTo: $(val).find('.todo__assignedTo').val(),
                 isDone: $(val).find('.todo__item-check').is(':checked')
             });
         });
@@ -218,7 +226,7 @@
         target.find('.todo__item').each((index, val) => {
             items.push({
                 text: $(val).find('.todo__item-description').text(),
-                assignedTo: $(val).find('.todo__assignedTo').val(),
+                //assignedTo: $(val).find('.todo__assignedTo').val(),
                 isDone: $(val).find('.todo__item-check').is(':checked')
             });
         });

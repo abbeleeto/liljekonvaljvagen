@@ -122,6 +122,15 @@ app.get('/dashboard/todo', auth, (req, res) => {
     });
 });
 
+app.get('/dashboard/gallery', auth, (req, res) => {
+
+    res.render('gallery', {
+        dashboard: true,
+        isAdmin: req.user.role === 1 ? true : false,
+        user: req.user.firstname,
+    });
+})
+
 app.get('/dashboard/shoppinglist', auth, (req, res) => {
     if(!req.user) return res.redirect('/login');
 
