@@ -470,7 +470,7 @@ textarea {
     transition: all .2s;
 }
 .button-primary:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
     box-shadow: var(--shadow-dark);
 
 }
@@ -663,6 +663,11 @@ textarea {
 
 .todo__item > select {
     height: 100%;
+}
+.todo__item > input[type="checkbox"] {
+    height: 3rem;
+    width: 3rem;
+    margin-right: 3rem;
 }
 
 .todo__item-description {

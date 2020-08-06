@@ -9,10 +9,9 @@
             
             <div class="todo__title" placeholder="Beskrivning" contenteditable spellcheck="false">Skapa ny lista</div>
  
-            <ul class="todo__list-items-new">
+            <ul class="todo__list">
                 <li class="todo__item">
                     <input type="checkbox" class="todo__item-check-new">
-                    {{!-- <input type="text" class="todo__description-new todo__description empty" placeholder="Beskrivning" spellcheck="false"> --}}
                     <div class="todo__item-description todo__description-new empty" placeholder="Beskrivning" contenteditable spellcheck="false">
                         {{this.text}}
                     </div>
@@ -57,7 +56,7 @@
                     {{#each this.items}}
                         <li class="todo__item">
                             <input class="todo__item-check" type="checkbox" {{#if this.isDone}}checked="checked"{{/if}}>
-                            {{!-- <input class="todo__item-description" type="text" value='{{this.text}}'> --}}
+
                             <div class="todo__item-description" contenteditable spellcheck="false">
                                 {{this.text}}
                             </div>

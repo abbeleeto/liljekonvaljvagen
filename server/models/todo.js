@@ -37,11 +37,5 @@ const todoSchema = mongoose.Schema({
 
 const Todo = mongoose.model('Todo', todoSchema);
 
-/* Todo.findByIdAndDelete = (id, cb) => {
-    Model.findByIdAndDelete(id, (err, data) => {
-        err ? cb(err, null) : cb(null, data);
-    });
-}
- */
 module.exports = {Todo};
 
