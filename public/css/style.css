@@ -533,6 +533,8 @@ textarea {
     box-shadow: var(--shadow-dark);
     margin: 2rem;
     border-radius: 1rem;
+    justify-content: space-between;
+    align-self: flex-start;
 }
 .todo__list-items-new {
     padding: 0rem;
